@@ -1,0 +1,2 @@
+#define FORCE_NKRO
+#define DYNAMIC_MACRO_NO_NESTING
