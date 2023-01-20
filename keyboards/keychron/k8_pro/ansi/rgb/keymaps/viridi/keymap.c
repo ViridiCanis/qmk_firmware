@@ -91,3 +91,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+void dynamic_macro_record_start_user(void) {
+    for (int i = 0; i < 10; i++) {
+        rgb_matrix_increase_hue();
+    }
+}
+
+void dynamic_macro_record_end_user(int8_t direction) {
+    for (int i = 0; i < 10; i++) {
+        rgb_matrix_decrease_hue();
+    }
+}
