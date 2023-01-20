@@ -17,8 +17,10 @@
 #include "quantum.h"
 #include "raw_hid.h"
 #ifdef KC_BLUETOOTH_ENABLE
-#include "transport.h"
-#include "ckbt51.h"
+#    include "transport.h"
+#    include "battery.h"
+#    include "lpm.h"
+#    include "ckbt51.h"
 #endif
 
 #ifndef BL_TEST_KEY1
@@ -203,31 +205,31 @@ bool led_matrix_indicators_user(void) {
 }
 #endif
 
-#ifdef RGB_MATRIX_ENABLE
-bool rgb_matrix_indicators_user(void) {
-    if (factory_reset_ind_state) {
-        backlight_test_mode = BACKLIGHT_TEST_OFF;
-        rgb_matrix_set_color_all(factory_reset_ind_state % 2 ? 0 : 255, 0, 0);
-    } else if (backlight_test_mode) {
-        switch (backlight_test_mode) {
-            case BACKLIGHT_TEST_WHITE:
-                rgb_matrix_set_color_all(255, 255, 255);
-                break;
-            case BACKLIGHT_TEST_RED:
-                rgb_matrix_set_color_all(255, 0, 0);
-                break;
-            case BACKLIGHT_TEST_GREEN:
-                rgb_matrix_set_color_all(0, 255, 0);
-                break;
-            case BACKLIGHT_TEST_BLUE:
-                rgb_matrix_set_color_all(0, 0, 255);
-                break;
-        }
-    }
+// #ifdef RGB_MATRIX_ENABLE
+// bool rgb_matrix_indicators_user(void) {
+//     if (factory_reset_ind_state) {
+//         backlight_test_mode = BACKLIGHT_TEST_OFF;
+//         rgb_matrix_set_color_all(factory_reset_ind_state % 2 ? 0 : 255, 0, 0);
+//     } else if (backlight_test_mode) {
+//         switch (backlight_test_mode) {
+//             case BACKLIGHT_TEST_WHITE:
+//                 rgb_matrix_set_color_all(255, 255, 255);
+//                 break;
+//             case BACKLIGHT_TEST_RED:
+//                 rgb_matrix_set_color_all(255, 0, 0);
+//                 break;
+//             case BACKLIGHT_TEST_GREEN:
+//                 rgb_matrix_set_color_all(0, 255, 0);
+//                 break;
+//             case BACKLIGHT_TEST_BLUE:
+//                 rgb_matrix_set_color_all(0, 0, 255);
+//                 break;
+//         }
+//     }
 
-    return true;
-}
-#endif
+// return true;
+// }
+// #endif
 
 void factory_reset_task(void) {
     if (factory_reset_timer) factory_timer_check();
@@ -244,7 +246,8 @@ void factory_test_send(uint8_t *payload, uint8_t length) {
     memcpy(&data[i], payload, length);
     i += length;
 
-    for (uint8_t i = 1; i < RAW_EPSIZE - 3; i++) checksum += data[i];
+    for (uint8_t i = 1; i < RAW_EPSIZE - 3; i++)
+        checksum += data[i];
     data[RAW_EPSIZE - 2] = checksum & 0xFF;
     data[RAW_EPSIZE - 1] = (checksum >> 8) & 0xFF;
 
