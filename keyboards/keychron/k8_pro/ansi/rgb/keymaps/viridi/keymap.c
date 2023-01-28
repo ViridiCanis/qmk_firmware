@@ -24,7 +24,7 @@ enum layers {
 };
 
 enum my_keycodes {
-    MY_DELAY = SAFE_RANGE
+    MY_DELAY = SAFE_RANGE,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -61,6 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //      _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
 };
 
+bool f13_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -68,6 +69,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 wait_ms(500);
             }
+
             return false;
         default:
             return true;
@@ -82,14 +84,20 @@ bool dip_switch_update_user(uint8_t index, bool active) {
     return true;
 }
 
+bool dyn_macro_is_recording = false;
+
 void dynamic_macro_record_start_user(void) {
-    for (int i = 0; i < 10; i++) {
-        rgb_matrix_increase_hue();
-    }
+    dyn_macro_is_recording = true;
 }
 
 void dynamic_macro_record_end_user(int8_t direction) {
-    for (int i = 0; i < 10; i++) {
-        rgb_matrix_decrease_hue();
+    dyn_macro_is_recording = false;
+}
+
+bool rgb_matrix_indicators_user(void) {
+    if (dyn_macro_is_recording) {
+        rgb_matrix_set_color(0x47, 255, 0, 0);
     }
+
+    return true;
 }
