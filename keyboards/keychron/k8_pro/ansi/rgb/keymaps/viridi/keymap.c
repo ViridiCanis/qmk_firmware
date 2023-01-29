@@ -16,6 +16,8 @@
 
 #include QMK_KEYBOARD_H
 
+#include "features/mouse_turbo_click.h"
+
 // clang-format off
 enum layers {
     BASE,
@@ -25,6 +27,7 @@ enum layers {
 
 enum my_keycodes {
     MY_DELAY = SAFE_RANGE,
+    TURBO
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -39,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [FN] = LAYOUT_ansi_87(
      _______,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,            _______,  _______,  RGB_TOG,
      _______,  BT_HST1,  BT_HST2,  BT_HST3,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-     RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+     RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,  _______,  _______,  _______,  _______,  TURBO,    _______,  _______,  _______,  _______,  _______,  _______,
      _______,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
      _______,            _______,  _______,  _______,  _______,  BAT_LVL,  NK_TOGG,  _______,  DM_REC1,  DM_PLY1,  MY_DELAY,           _______,            _______,
      _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
@@ -64,6 +67,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool f13_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_mouse_turbo_click(keycode, record, TURBO)) {
+        return false;
+    }
+
     switch (keycode) {
         case MY_DELAY:
             if (record->event.pressed) {
