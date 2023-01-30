@@ -105,6 +105,9 @@ bool rgb_matrix_indicators_user(void) {
     if (dyn_macro_is_recording) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
     }
+    if (turbo_click_active) {
+        rgb_matrix_set_color(0x2b, 255, 0, 0);
+    }
 
     return true;
 }
