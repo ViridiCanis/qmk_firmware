@@ -74,7 +74,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MY_DELAY:
             if (record->event.pressed) {
-                wait_ms(500);
+                wait_ms(200);
             }
 
             return false;
