@@ -27,7 +27,8 @@ enum layers {
 
 enum my_keycodes {
     MY_DELAY = SAFE_RANGE,
-    TURBO
+    TURBO,
+    R_CHAT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -50,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [EXTRA] = LAYOUT_ansi_87(
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  _______,  _______,
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-     _______,  QK_LOCK,  _______,  _______,  _______,  TURBO,    _______,  _______,  KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,  _______,  _______,  _______,  _______,  _______,
+     _______,  QK_LOCK,  _______,  _______,  R_CHAT,   TURBO,    _______,  _______,  KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,  _______,  _______,  _______,  _______,  _______,
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_KP_4,  KC_KP_5,  KC_KP_6,  KC_NUM,             _______,
      _______,            _______,  _______,  _______,  _______,  _______,  _______,  KC_KP_0,  KC_KP_1,  KC_KP_2,  KC_KP_3,            _______,            _______,
      _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
@@ -78,9 +79,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
 
             return false;
-        default:
-            return true;
+        case R_CHAT:
+            // i don't know where the pressed GUI mod comes from, but it's there
+            unregister_code(KC_LGUI);
+
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ENTER) SS_DELAY(20));
+
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    del_mods(MOD_MASK_SHIFT);
+                    SEND_STRING("r?");
+                    register_code(KC_LEFT_SHIFT);
+                } else {
+                    SEND_STRING("r");
+                }
+
+                SEND_STRING(SS_DELAY(20) SS_TAP(X_ENTER));
+            }
+
+            return false;
     }
+
+    return true;
 }
 
 bool dip_switch_update_user(uint8_t index, bool active) {
