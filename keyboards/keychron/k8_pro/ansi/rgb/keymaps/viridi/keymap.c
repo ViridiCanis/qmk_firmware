@@ -128,6 +128,9 @@ bool rgb_matrix_indicators_user(void) {
     if (turbo_click_active) {
         rgb_matrix_set_color(0x26, 255, 0, 0);
     }
+    if (host_keyboard_led_state().num_lock) {
+        rgb_matrix_set_color(0x3d, 255, 0, 0);
+    }
 
     return true;
 }
