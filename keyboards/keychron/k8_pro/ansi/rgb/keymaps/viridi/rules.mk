@@ -1,4 +1,4 @@
-SRC += features/mouse_turbo_click.c
+SRC += features/turbo_repeat.c
 
 DYNAMIC_MACRO_ENABLE = yes
 KEY_LOCK_ENABLE = yes

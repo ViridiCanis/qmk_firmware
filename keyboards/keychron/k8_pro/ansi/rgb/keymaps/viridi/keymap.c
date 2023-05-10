@@ -16,7 +16,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "features/mouse_turbo_click.h"
+#include "features/turbo_repeat.h"
 
 // clang-format off
 enum layers {
@@ -27,11 +27,17 @@ enum layers {
 
 enum my_keycodes {
     MY_DELAY = SAFE_RANGE,
-    TURBO,
+    TURBO_CLICK,
+    TURBO_REPEAT,
+    TURBO_REPEAT_SET,
     R_CHAT
 };
 
 #define MT_CAPS MT(MOD_RSFT, KC_CAPS)
+
+#define TRB_CLK TURBO_CLICK
+#define TRB_REP TURBO_REPEAT
+#define TRB_SET TURBO_REPEAT_SET
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_ansi_87(
@@ -53,8 +59,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [EXTRA] = LAYOUT_ansi_87(
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  _______,  _______,
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-     _______,  QK_LOCK,  _______,  _______,  R_CHAT,   TURBO,    _______,  _______,  KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,  _______,  _______,  _______,  _______,  _______,
-     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_KP_4,  KC_KP_5,  KC_KP_6,  KC_NUM,             _______,
+     _______,  QK_LOCK,  _______,  _______,  R_CHAT,   TRB_CLK,  _______,  _______,  KC_KP_7,  KC_KP_8,  KC_KP_9,  _______,  _______,  _______,  _______,  _______,  _______,
+     _______,  TRB_SET,  TRB_REP,  _______,  _______,  _______,  _______,  _______,  KC_KP_4,  KC_KP_5,  KC_KP_6,  KC_NUM,             _______,
      _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_KP_0,  KC_KP_1,  KC_KP_2,  KC_KP_3,                      _______,            _______,
      _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
 
@@ -67,14 +73,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //      _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______,  _______),
 };
 
-bool f13_pressed = false;
+struct TurboRepeatState turbo_click_state;
+struct TurboRepeatState turbo_repeat_state;
+
+void keyboard_post_init_user(void) {
+    debug_enable = true;
+
+    turbo_click_state = create_state(KC_MS_BTN1);
+    turbo_repeat_state = create_state(KC_A);
+}
+
+static bool awaiting_turbo_repeat_set = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (!process_mouse_turbo_click(keycode, record, TURBO)) {
+    if (awaiting_turbo_repeat_set) {
+        awaiting_turbo_repeat_set = false;
+        turbo_repeat_state.keycode_to_repeat = keycode;
+
+        return false;
+    }
+
+    if (!process_turbo_repeat(keycode, record, &turbo_click_state, TURBO_CLICK)) {
+        return false;
+    }
+
+    if (!process_turbo_repeat(keycode, record, &turbo_repeat_state, TURBO_REPEAT)) {
         return false;
     }
 
     switch (keycode) {
+        case TURBO_REPEAT_SET:
+            awaiting_turbo_repeat_set = true;
+
+            return false;
         case MY_DELAY:
             if (record->event.pressed) {
                 wait_ms(200);
@@ -127,8 +158,11 @@ bool rgb_matrix_indicators_user(void) {
     if (dyn_macro_is_recording) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
     }
-    if (turbo_click_active) {
+    if (turbo_click_state.active) {
         rgb_matrix_set_color(0x26, 255, 0, 0);
+    }
+    if (turbo_repeat_state.active) {
+        rgb_matrix_set_color(0x34, 255, 0, 0);
     }
     if (host_keyboard_led_state().num_lock) {
         rgb_matrix_set_color(0x3d, 255, 0, 0);
