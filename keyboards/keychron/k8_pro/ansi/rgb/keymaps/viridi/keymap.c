@@ -86,7 +86,7 @@ void keyboard_post_init_user(void) {
 static bool awaiting_turbo_repeat_set = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (awaiting_turbo_repeat_set) {
+    if (record->event.pressed && awaiting_turbo_repeat_set) {
         awaiting_turbo_repeat_set = false;
         turbo_repeat_state.keycode_to_repeat = keycode;
 
