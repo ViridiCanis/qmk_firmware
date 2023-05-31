@@ -190,11 +190,14 @@ bool rgb_matrix_indicators_user(void) {
     if (dyn_macro_is_recording) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
     }
-    if (turbo_click_state.active) {
-        rgb_matrix_set_color(0x26, 255, 0, 0);
+    if (awaiting_turbo_repeat_set) {
+        rgb_matrix_set_color(0x40, 255, 0, 0);
     }
     if (turbo_repeat_state.active) {
-        rgb_matrix_set_color(0x34, 255, 0, 0);
+        rgb_matrix_set_color(0x41, 255, 0, 0);
+    }
+    if (turbo_click_state.active) {
+        rgb_matrix_set_color(0x42, 255, 0, 0);
     }
     if (host_keyboard_led_state().num_lock) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
