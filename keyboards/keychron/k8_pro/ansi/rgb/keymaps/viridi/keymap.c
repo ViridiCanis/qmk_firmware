@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "action_layer.h"
 #include QMK_KEYBOARD_H
 
 #include "features/turbo_repeat.h"
@@ -98,15 +99,13 @@ void keyboard_post_init_user(void) {
     turbo_repeat_state = create_state(KC_A);
 }
 
-static uint8_t extra_layer;
+static bool extra_layer_macros;
 
 bool dip_switch_update_user(uint8_t index, bool active) {
     if (index == 0) {
-        layer_off(extra_layer);
-        if (active)  {
-            extra_layer = EXTRA_MACROS;
-        } else {
-            extra_layer = EXTRA_SIMPLE;
+        extra_layer_macros = active;
+        if (!active) {
+            layer_off(EXTRA_MACROS);
         }
     }
 
@@ -118,9 +117,15 @@ static bool awaiting_turbo_repeat_set = false;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == EXTRA_SWITCH) {
         if (record->event.pressed) {
-            layer_on(extra_layer);
+            layer_on(EXTRA_SIMPLE);
+            if (extra_layer_macros) {
+                layer_on(EXTRA_MACROS);
+            }
         } else {
-            layer_off(extra_layer);
+            layer_off(EXTRA_SIMPLE);
+            if (extra_layer_macros) {
+                layer_off(EXTRA_MACROS);
+            }
         }
 
         return false;
