@@ -14,7 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "action_layer.h"
 #include QMK_KEYBOARD_H
 
 #include "features/turbo_repeat.h"
@@ -128,6 +127,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     if (record->event.pressed && awaiting_turbo_repeat_set) {
         awaiting_turbo_repeat_set = false;
+        unregister_code16(keycode);
         turbo_repeat_state.keycode_to_repeat = keycode;
 
         return false;
