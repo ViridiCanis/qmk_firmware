@@ -104,9 +104,6 @@ static bool extra_layer_macros;
 bool dip_switch_update_user(uint8_t index, bool active) {
     if (index == 0) {
         extra_layer_macros = active;
-        if (!active) {
-            layer_off(EXTRA_MACROS);
-        }
     }
 
     return false; // override default functionality
@@ -123,9 +120,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         } else {
             layer_off(EXTRA_SIMPLE);
-            if (extra_layer_macros) {
-                layer_off(EXTRA_MACROS);
-            }
+            layer_off(EXTRA_MACROS);
         }
 
         return false;
