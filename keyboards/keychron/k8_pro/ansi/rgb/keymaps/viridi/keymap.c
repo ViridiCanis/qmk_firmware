@@ -197,6 +197,9 @@ void dynamic_macro_record_end_user(int8_t direction) {
 }
 
 bool rgb_matrix_indicators_user(void) {
+    if (layer_state_is(MOUSE_MODE)) {
+        rgb_matrix_set_color(0x3c, 255, 0, 0);
+    }
     if (dyn_macro_is_recording) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
     }
