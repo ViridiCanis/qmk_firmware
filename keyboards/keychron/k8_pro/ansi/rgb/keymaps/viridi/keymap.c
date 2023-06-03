@@ -23,6 +23,7 @@ enum layers {
     BASE,
     EXTRA_SIMPLE,
     EXTRA_MACROS,
+    MOUSE_MODE,
     FN
 };
 
@@ -42,6 +43,7 @@ enum my_keycodes {
 #define TRB_CLK TURBO_CLICK
 #define TRB_REP TURBO_REPEAT
 #define TRB_SET TURBO_REPEAT_SET
+#define MS_MD MOUSE_MODE
 
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -61,24 +63,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_PSLS,  KC_PAST,  KC_PMNS,  KC_PPLS,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,  KC_P7,    KC_P8,    KC_P9,    KC_PDOT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  _______,  _______,  _______,  KC_P4,    KC_P5,    KC_P6,    KC_P0,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,    KC_P3,    KC_PENT,  KC_NUM,   XXXXXXX,  XXXXXXX,                      XXXXXXX,            XXXXXXX,
+     _______,  _______,  _______,  _______,  KC_P4,    KC_P5,    KC_P6,    KC_P0,    XXXXXXX,  XXXXXXX,  TG(MS_MD),XXXXXXX,            XXXXXXX,
+     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,    KC_P3,    KC_PENT,  KC_NUM,   XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
      _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
 [EXTRA_MACROS] = LAYOUT_ansi_87(
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  QK_LOCK,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            R_CHAT,
-     _______,  TRB_SET,  TRB_REP,  TRB_CLK,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,                      XXXXXXX,            XXXXXXX,
+     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,            R_CHAT,
+     _______,  TRB_SET,  TRB_REP,  TRB_CLK,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
+     _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+
+[MOUSE_MODE] = LAYOUT_ansi_87(
+     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
+     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+     _______,  KC_BTN1,  KC_BTN2,  KC_BTN3,  XXXXXXX,  XXXXXXX,  KC_MS_L,  KC_MS_D,  KC_MS_U,  KC_MS_R, _______,  XXXXXXX,            XXXXXXX,
+     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
      _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
 [FN] = LAYOUT_ansi_87(
      XXXXXXX,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,            XXXXXXX,  XXXXXXX,  RGB_TOG,
      XXXXXXX,  BT_HST1,  BT_HST2,  BT_HST3,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
      RGB_TOG,  RGB_MOD,  RGB_VAI,  RGB_HUI,  RGB_SAI,  RGB_SPI,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  BAT_LVL,  NK_TOGG,  XXXXXXX,  DM_REC1,  DM_PLY1,  MY_DELAY,                     XXXXXXX,            XXXXXXX,
+     XXXXXXX,  RGB_RMOD, RGB_VAD,  RGB_HUD,  RGB_SAD,  RGB_SPD,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  BAT_LVL,  NK_TOGG,  XXXXXXX,  DM_REC1,  DM_PLY1,  MY_DELAY,                     _______,            XXXXXXX,
      _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
 // [x] = LAYOUT_ansi_87(
