@@ -35,8 +35,7 @@ enum my_keycodes {
     EXTRA_SWITCH,
     TURBO_CLICK,
     TURBO_REPEAT,
-    TURBO_REPEAT_SET,
-    R_CHAT
+    TURBO_REPEAT_SET
 };
 
 #define EXT_SWT EXTRA_SWITCH
@@ -71,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
      XXXXXXX,  QK_LOCK,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,            R_CHAT,
+     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,            XXXXXXX,
      _______,  TRB_SET,  TRB_REP,  TRB_CLK,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
      _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
@@ -159,25 +158,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MY_DELAY:
             if (record->event.pressed) {
                 wait_ms(200);
-            }
-
-            return false;
-        case R_CHAT:
-            // i don't know where the pressed GUI mod comes from, but it's there
-            unregister_code(KC_LGUI);
-
-            if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_ENTER) SS_DELAY(20));
-
-                if (get_mods() & MOD_MASK_SHIFT) {
-                    del_mods(MOD_MASK_SHIFT);
-                    SEND_STRING("r?");
-                    register_code(KC_LEFT_SHIFT);
-                } else {
-                    SEND_STRING("r");
-                }
-
-                SEND_STRING(SS_DELAY(20) SS_TAP(X_ENTER));
             }
 
             return false;
