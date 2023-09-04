@@ -21,18 +21,19 @@
 // clang-format off
 enum layers {
     BASE,
-    EXTRA_SIMPLE,
     EXTRA_MACROS,
     MOUSE_MODE,
     FN
 };
 
-#define EXT_SMP EXTRA_SIMPLE
-#define EXT_MCR EXTRA_MACROS
+#define EXTRA_SWITCH MO(EXTRA_MACROS)
 
 enum my_keycodes {
     MY_DELAY = SAFE_RANGE,
-    EXTRA_SWITCH,
+    LSUPER,
+    LALT,
+    RSUPER,
+    RALT,
     TURBO_CLICK,
     TURBO_REPEAT,
     TURBO_REPEAT_SET
@@ -56,22 +57,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,  KC_DEL,    KC_END,   KC_PGDN,
      EXT_SWT,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,
      KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,                      MT_CAPS,             KC_UP,
-     KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                 KC_RALT,  KC_RGUI,  OSL(FN),  KC_RCTL,  KC_LEFT,   KC_DOWN,  KC_RGHT),
-
-[EXTRA_SIMPLE] = LAYOUT_ansi_87(
-     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
-     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_PSLS,  KC_PAST,  KC_PMNS,  KC_PPLS,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,  KC_P7,    KC_P8,    KC_P9,    KC_PDOT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  _______,  _______,  _______,  KC_P4,    KC_P5,    KC_P6,    KC_P0,    XXXXXXX,  XXXXXXX,  TG(MS_MD),XXXXXXX,            XXXXXXX,
-     _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,    KC_P3,    KC_PENT,  KC_NUM,   XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
-     _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+     KC_LCTL,  LSUPER,   LALT,                                   KC_SPC,                                 RALT,     RSUPER,   OSL(FN),  KC_RCTL,  KC_LEFT,   KC_DOWN,  KC_RGHT),
 
 [EXTRA_MACROS] = LAYOUT_ansi_87(
      XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,  XXXXXXX,
-     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     XXXXXXX,  QK_LOCK,  _______,  XXXXXXX,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  _______,  XXXXXXX,            XXXXXXX,
-     _______,  TRB_SET,  TRB_REP,  TRB_CLK,  _______,  _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
+     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_PSLS,  KC_PAST,  KC_PMNS,  KC_PPLS,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+     XXXXXXX,  QK_LOCK,  _______,  XXXXXXX,  KC_P7,    KC_P8,    KC_P9,    KC_PDOT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+     _______,  _______,  _______,  _______,  KC_P4,    KC_P5,    KC_P6,    KC_P0,    XXXXXXX,  XXXXXXX,  TG(MS_MD),XXXXXXX,            XXXXXXX,
+     _______,  TRB_SET,  TRB_REP,  TRB_CLK,  KC_P1,    KC_P2,    KC_P3,    KC_PENT,  KC_NUM,   XXXXXXX,  XXXXXXX,                      _______,            XXXXXXX,
      _______,  _______,  _______,                                XXXXXXX,                                _______,  _______,  _______,  _______,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
 [MOUSE_MODE] = LAYOUT_ansi_87(
@@ -107,11 +100,11 @@ void keyboard_post_init_user(void) {
     turbo_repeat_state = create_state(KC_A);
 }
 
-static bool extra_layer_macros;
+static bool macos_mods;
 
 bool dip_switch_update_user(uint8_t index, bool active) {
     if (index == 0) {
-        extra_layer_macros = active;
+        macos_mods = active;
     }
 
     return false; // override default functionality
@@ -120,20 +113,6 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 static bool awaiting_turbo_repeat_set = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == EXTRA_SWITCH) {
-        if (record->event.pressed) {
-            layer_on(EXTRA_SIMPLE);
-            if (extra_layer_macros) {
-                layer_on(EXTRA_MACROS);
-            }
-        } else {
-            layer_off(EXTRA_SIMPLE);
-            layer_off(EXTRA_MACROS);
-        }
-
-        return false;
-    }
-
     if (record->event.pressed && awaiting_turbo_repeat_set) {
         awaiting_turbo_repeat_set = false;
         unregister_code16(keycode);
@@ -151,6 +130,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
+        case LSUPER:
+            if (record->event.pressed) {
+                register_code((macos_mods) ? KC_LOPT : KC_LGUI);
+            } else {
+                unregister_code((macos_mods) ? KC_LOPT : KC_LGUI);
+            }
+            return false;
+        case LALT:
+            if (record->event.pressed) {
+                register_code((macos_mods) ? KC_LCMD : KC_LALT);
+            } else {
+                unregister_code((macos_mods) ? KC_LCMD : KC_LALT);
+            }
+            return false;
+        case RSUPER:
+            if (record->event.pressed) {
+                register_code((macos_mods) ? KC_ROPT : KC_RGUI);
+            } else {
+                unregister_code((macos_mods) ? KC_ROPT : KC_RGUI);
+            }
+            return false;
+        case RALT:
+            if (record->event.pressed) {
+                register_code((macos_mods) ? KC_RCMD : KC_RALT);
+            } else {
+                unregister_code((macos_mods) ? KC_RCMD : KC_RALT);
+            }
+            return false;
+
         case TURBO_REPEAT_SET:
             awaiting_turbo_repeat_set = true;
 
