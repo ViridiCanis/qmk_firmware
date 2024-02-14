@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdbool.h>
+#include "transport.h"
 #include QMK_KEYBOARD_H
 
 #include "features/turbo_repeat.h"
@@ -203,6 +205,8 @@ bool rgb_matrix_indicators_user(void) {
     if (host_keyboard_led_state().num_lock) {
         rgb_matrix_set_color(0x47, 255, 0, 0);
     }
+
+    writePin(H3, get_transport() == TRANSPORT_BLUETOOTH ? HOST_LED_PIN_ON_STATE : !HOST_LED_PIN_ON_STATE);
 
     return true;
 }
